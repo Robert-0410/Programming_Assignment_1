@@ -1,25 +1,19 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+# TODO: redo user input with sys.argv
+import sys
+# TODO: function to print to file
 
 
-# Press the green button in the gutter to run the script.
-print("Input in the form: [size] \"[initialstate]\" [searchmethod] example: 2 \"32 1\" DFS")
-userInput = input("Enter input: ")
+def prep_input(ter_input):
+    output = [ter_input[1], ter_input[2], ter_input[3]]
+    return output
 
-tokens = userInput.split()
 
-args = ["", "", "", ""]
-count = 0
-for i in tokens:
-    print(i)
-    args[count] = i
-    print(args[count])
-    count = count + 1
+def main():
+    args = prep_input(sys.argv)
+    for i in args:
+        print(i)
+
+
+main()
