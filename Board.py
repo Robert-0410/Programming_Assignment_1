@@ -1,9 +1,13 @@
 # Models an n-by-n board with sliding tiles.
 
 # Class representing our state environment
+from Solver import inversion_count, is_solvable
+
+
 class Board:
 
     def __init__(self, size, the_list, algorithm):
+        self.the_list = [char for char in the_list]
         self.size = size
         self.state = self.make_board(the_list)  # TODO: make 2D list
         self.algorithm = algorithm
@@ -28,9 +32,9 @@ class Board:
 
 # Test function for testing code in this file
 def test():
-    t = Board(4, "123456789AB DEFC", "GBFS")
+    t = Board(3, " 13425786", "GBFS")
     print(t.state)
-    # TODO: start on preliminary solvable
-
+    print(t.the_list)
+    is_solvable(t) # TODO: move to driver and set up savable logic
 
 test()
