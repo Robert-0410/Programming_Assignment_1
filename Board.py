@@ -51,9 +51,9 @@ def test():
     t = Board(4, "123456789AB DEFC", "GBFS")
     print(t.state)
     print(t.the_list)
-    flag = is_solvable(t)  # TODO: move to driver and set up savable logic
+    flag = is_solvable(t)
     print(t.row_of_blank)
     print(flag)
 
 
-test()
+#test()

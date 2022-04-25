@@ -26,3 +26,6 @@ def is_solvable(board):
 
     return output
 
+
+# TODO: implement: BFS, DFS, GBFS, A*
+

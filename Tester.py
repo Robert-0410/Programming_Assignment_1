@@ -3,6 +3,8 @@
 # TODO: redo user input with sys.argv
 import sys
 # TODO: function to print to file
+from Board import Board
+from Solver import is_solvable
 
 
 def prep_input(ter_input):
@@ -11,9 +13,13 @@ def prep_input(ter_input):
 
 
 def main():
-    args = prep_input(sys.argv)
-    for i in args:
-        print(i)
+    if len(sys.argv) == 4:
+        args = prep_input(sys.argv)
+        game = Board(int(args[0]), args[1], args[2])
+        flag = is_solvable(game)
+        print(flag)
+    else:
+        print("Did not receive command line arguments.")
 
 
 main()
