@@ -11,5 +11,18 @@ def inversion_count(the_list, size):
 
 def is_solvable(board):
     inversions = inversion_count(board.the_list, board.size)
-    print(inversions) # TODO: finish implementation
+
+    output = True
+    # odd case for board size
+    if board.size % 2 == 1 and inversions % 2 == 1:
+        output = False
+    # even case
+    elif board.size % 2 == 0:
+        check = inversions + board.row_of_blank
+        if check % 2 == 1:
+            output = True
+        else:
+            output = False
+
+    return output
 

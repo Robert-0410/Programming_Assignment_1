@@ -9,9 +9,10 @@ class Board:
     def __init__(self, size, the_list, algorithm):
         self.the_list = [char for char in the_list]
         self.size = size
-        self.state = self.make_board(the_list)  # TODO: make 2D list
+        self.state = self.make_board(the_list)
+        self.row_of_blank = find_blank_spot(size, the_list)
         self.algorithm = algorithm
-        self.goal_state = ["", "", ""]  # TODO: this will contain the goal state once implemented
+        self.goal_state = [""]  # TODO: this will contain the goal state once implemented
 
     def make_board(self, the_list):
         end = self.size
@@ -30,11 +31,29 @@ class Board:
         return output
 
 
+def find_blank_spot(size, the_list):
+    index = the_list.find(' ')
+    helper = size
+    row = 0
+
+    for i in range(0, (size * size)):
+        if index < helper:
+            break
+        elif index >= helper:
+            row = row + 1
+            helper = helper + size
+
+    return row
+
+
 # Test function for testing code in this file
 def test():
-    t = Board(3, " 13425786", "GBFS")
+    t = Board(4, "123456789AB DEFC", "GBFS")
     print(t.state)
     print(t.the_list)
-    is_solvable(t) # TODO: move to driver and set up savable logic
+    flag = is_solvable(t)  # TODO: move to driver and set up savable logic
+    print(t.row_of_blank)
+    print(flag)
+
 
 test()
