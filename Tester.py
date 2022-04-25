@@ -1,10 +1,11 @@
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
 
-# TODO: redo user input with sys.argv
 import sys
-# TODO: function to print to file
 from Board import Board
-from Solver import is_solvable
+from Solver import is_solvable, breath_first_search
+
+# TODO: function to print to file
+# TODO: redo user input with sys.argv
 
 
 def prep_input(ter_input):
@@ -18,8 +19,11 @@ def main():
         game = Board(int(args[0]), args[1], args[2])
         flag = is_solvable(game)
         print(flag)
+        bfs_test = breath_first_search(game)
+        print(bfs_test)
+
     else:
-        print("Did not receive command line arguments.")
+        print("Did not receive command line arguments")
 
 
 main()

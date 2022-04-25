@@ -1,7 +1,7 @@
 # Models an n-by-n board with sliding tiles.
 
 # Class representing our state environment
-from Solver import inversion_count, is_solvable
+from Solver import is_solvable
 
 
 class Board:
@@ -13,6 +13,11 @@ class Board:
         self.row_of_blank = find_blank_spot(size, the_list)
         self.algorithm = algorithm
         self.goal_state = [""]  # TODO: this will contain the goal state once implemented
+        self.path = [""]  # TODO: will contain solution path once implemented
+        self.depth = 0  # TODO: depth of solution once implemented
+        self.num_created = 0  # TODO: counter for nodes of the search tree that are created
+        self.num_expanded = 0  # TODO: nodes that have been expanded
+        self.max_fringe = 0  # TODO: max size of fringe at any point during the search
 
     def make_board(self, the_list):
         end = self.size
@@ -55,5 +60,4 @@ def test():
     print(t.row_of_blank)
     print(flag)
 
-
-#test()
+# test()
