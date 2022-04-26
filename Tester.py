@@ -24,6 +24,8 @@ def main():
 
     else:
         print("Did not receive command line arguments")
+        game = Board(2, "32 1", "DFS")
+        print(breath_first_search(game))
 
 
 main()

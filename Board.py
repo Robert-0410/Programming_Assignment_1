@@ -4,10 +4,12 @@
 from Solver import is_solvable
 
 
+# TODO: might have to create my own state class or node
 class Board:
 
     def __init__(self, size, the_list, algorithm):
         self.the_list = [char for char in the_list]
+        self.list_as_str = the_list
         self.size = size
         self.state = self.make_board(the_list)
         self.row_of_blank = find_blank_spot(size, the_list)

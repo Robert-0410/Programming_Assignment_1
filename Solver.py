@@ -4,13 +4,14 @@
 mapping2 = {
     # 2 1
     # 3
-    0: {'1', '3'},
-    1: {'2', ' '},
-    2: {'2', ' '},
-    3: {'1', '1'}
+    0: {2, 1},
+    1: {3, 0},
+    2: {3, 0},
+    3: {1, 2}
 }
 
 
+# Counts number of inversions in a given list representation of an n x n game state
 def inversion_count(the_list):
     output = 0
     blank_position = ' '
@@ -42,38 +43,59 @@ def is_solvable(board):
 
 # Performs BFS on sliding puzzle for solution
 def breath_first_search(board):
-    # TODO needs to be fixed along with helper functions
-    queue = [board.state]
+    # TODO make dynamic
+    # TODO remove print statements
+    # TODO store necessary state for solution: path, depth, num_created, num_expanded, max_fringe
+    queue = [board.list_as_str]
+    print("The Queue below")
     print(queue)
-    visited = set(board.state)
+    visited = set()
+    visited.add(board.list_as_str)
     depth = 0
     while queue:
         size = len(queue)
         for i in range(size):
             current = queue.pop(0)
-            if current == '213 ':
+            # TODO might be able to increase expanded here because after queueing they are expanded
+            print("current after pop")
+            print(current)
+            if current == '213 ':  # TODO this needs to be dynamic might just have a variable in class
+                print("Goal State")
+                print(current)
                 return depth
             add_child(current, visited, queue)
         depth += 1
     return -1
 
 
+# adds child to tree search TODO: verify if this function can be reused
 def add_child(current: str, visited, queue):
     index = current.index(' ')
-    for i in mapping2[index]:
+    for i in mapping2[index]:  # TODO make mapping dynamic
+        print("i in add_child for loop before swap")
+        print(i)
         s = swap(current, index, i)
         if s not in visited:
+            print("visited")
+            print(visited)
             queue.append(s)
+            print("Queue")
+            print(queue)
             visited.add(s)
+            print("s that was appended and added")
+            print(s)
+        else:
+            print("s was already visited")
 
 
-def swap(current: str, index, i):
+# conducts movement and returns updated state TODO verify if function can be reused in other algos
+def swap(current: str, index: int, i: int):
     s = list(current)
     s[index] = s[i]
     s[i] = ' '
-    ss = ''
+    output = ''
     for i in s:
-        ss += i
-    return ss
+        output += i
+    return output
 
 # TODO: implement: BFS, DFS, GBFS, A*
