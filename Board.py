@@ -8,51 +8,80 @@ from Solver import is_solvable
 mapping2 = {
     # 2 1
     # 3
-    0: {2, 1},
-    1: {3, 0},
-    2: {3, 0},
+    0: {1, 2},
+    1: {0, 3},
+    2: {0, 3},
     3: {1, 2}
 }
 
 # Game board for size 3 x 3
-# TODO fix mapping
 mapping3 = {
     # 0 1 2
     # 3 4 5
     # 6 7 8
-    0: {2, 1},
-    1: {3, 0},
-    2: {3, 0},
-    3: {1, 2},
-    4: {},
-    5: {},
-    6: {},
-    7: {},
-    8: {}
+    0: {1, 3},
+    1: {0, 2, 4},
+    2: {1, 5},
+    3: {0, 4, 6},
+    4: {1, 3, 5, 7},
+    5: {2, 4, 8},
+    6: {3, 7},
+    7: {4, 6, 8},
+    8: {5, 7}
 }
 
 # Game board for size 4 x 4
-# TODO fix mappingi
 mapping4 = {
-    # 2 1
-    # 3
-    0: {2, 1},
-    1: {3, 0},
-    2: {3, 0},
-    3: {1, 2},
-    4: {},
-    5: {},
-    6: {},
-    7: {},
-    8: {},
-    9: {},
-    10: {},
-    11: {},
-    12: {},
-    13: {},
-    14: {},
-    15: {}
+    # 0  1  2  3
+    # 4  5  6  7
+    # 8  9  10 11
+    # 12 13 14 15
+    0: {1, 4},
+    1: {0, 2, 5},
+    2: {1, 3, 6},
+    3: {2, 7},
+    4: {0, 5, 8},
+    5: {1, 4, 6, 9},
+    6: {2, 5, 7, 10},
+    7: {3, 6, 11},
+    8: {4, 9, 12},
+    9: {5, 8, 10, 13},
+    10: {6, 9, 11, 14},
+    11: {7, 10, 15},
+    12: {8, 13},
+    13: {9, 12, 14},
+    14: {10, 13, 15},
+    15: {11, 14}
 }
+
+# goal states for size 2, 3, and 4
+goal2 = "213 "
+goal3 = " 12345678"
+goal4 = "123456789ABCDEF "
+
+
+# mapping assignment
+def set_mapping(size: int):
+    if size == 2:
+        return mapping2
+    elif size == 3:
+        return mapping3
+    elif size == 4:
+        return mapping4
+    else:
+        print("Error: mapping was never assigned in set_mapping()")
+
+
+# goal state assignment
+def set_goal_state(size: int):
+    if size == 2:
+        return goal2
+    elif size == 3:
+        return goal3
+    elif size == 4:
+        return goal4
+    else:
+        print("Error: goal state was never assigned in set_goal_state()")
 
 
 # TODO: might have to create my own state class or node
@@ -65,11 +94,14 @@ class Board:
         self.state = self.make_board(the_list)
         self.row_of_blank = find_blank_spot(size, the_list)
         self.algorithm = algorithm
-        self.goal_state = [""]  # TODO: this will contain the goal state once implemented
+        self.goal_state = set_goal_state(size)
+        self.mapping = set_mapping(size)
+
+        # state for assignment requirements TODO verify outputs
         self.path = [""]  # TODO: will contain solution path once implemented
-        self.depth = 0  # TODO: depth of solution once implemented
-        self.num_created = 0  # TODO: counter for nodes of the search tree that are created
-        self.num_expanded = 0  # TODO: nodes that have been expanded
+        self.depth = 0
+        self.num_created = 0
+        self.num_expanded = 0
         self.max_fringe = 0  # TODO: max size of fringe at any point during the search
 
     def make_board(self, the_list):
@@ -104,6 +136,7 @@ def find_blank_spot(size, the_list):
     return row
 
 
+# TODO remove below code once sure it will not be needed
 # Test function for testing code in this file
 def test():
     t = Board(4, "123456789AB DEFC", "GBFS")

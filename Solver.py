@@ -1,15 +1,5 @@
 # Implements BFS, DFS, GBFS and A* to solve n-by-n sliding puzzle
 
-# goal state size 2
-mapping2 = {
-    # 2 1
-    # 3
-    0: {2, 1},
-    1: {3, 0},
-    2: {3, 0},
-    3: {1, 2}
-}
-
 
 # Counts number of inversions in a given list representation of an n x n game state
 def inversion_count(the_list):
@@ -42,33 +32,40 @@ def is_solvable(board):
 
 
 # Performs BFS on sliding puzzle for solution
+# returns -1 if failed, returns 0 if successful
 def breath_first_search(board):
-    # TODO make dynamic
-    # TODO store necessary state for solution: path, depth, num_created, num_expanded, max_fringe
+    # TODO store necessary state for solution: path
+    # TODO for finding the path try try paralleling the data structures but with nodes instead
     queue = [board.list_as_str]
     visited = set()
     visited.add(board.list_as_str)
     depth = 0
     while queue:
         size = len(queue)
+        if size > board.max_fringe:
+            board.max_fringe = size
         for i in range(size):
             current = queue.pop(0)
-            # TODO might be able to increase expanded here because after queueing they are expanded
-            if current == '213 ':  # TODO this needs to be dynamic might just have a variable in class
-                return depth
-            add_child(current, visited, queue)
+            board.num_expanded += 1
+            if current == board.goal_state:
+                # TODO once goal state is found we can back track to identify path
+                return 0
+            add_child(board, current, visited, queue)
         depth += 1
+        board.depth = depth
     return -1
 
 
 # adds child to tree search TODO: verify if this function can be reused
-def add_child(current: str, visited, queue):
+def add_child(board, current: str, visited, queue):
     index = current.index(' ')
-    for i in mapping2[index]:  # TODO make mapping dynamic
+    mapping = board.mapping
+    for i in mapping[index]:
         s = swap(current, index, i)
         if s not in visited:
             queue.append(s)
             visited.add(s)
+            board.num_created += 1
 
 
 # conducts movement and returns updated state TODO verify if function can be reused in other algos
