@@ -44,11 +44,8 @@ def is_solvable(board):
 # Performs BFS on sliding puzzle for solution
 def breath_first_search(board):
     # TODO make dynamic
-    # TODO remove print statements
     # TODO store necessary state for solution: path, depth, num_created, num_expanded, max_fringe
     queue = [board.list_as_str]
-    print("The Queue below")
-    print(queue)
     visited = set()
     visited.add(board.list_as_str)
     depth = 0
@@ -57,11 +54,7 @@ def breath_first_search(board):
         for i in range(size):
             current = queue.pop(0)
             # TODO might be able to increase expanded here because after queueing they are expanded
-            print("current after pop")
-            print(current)
             if current == '213 ':  # TODO this needs to be dynamic might just have a variable in class
-                print("Goal State")
-                print(current)
                 return depth
             add_child(current, visited, queue)
         depth += 1
@@ -72,20 +65,10 @@ def breath_first_search(board):
 def add_child(current: str, visited, queue):
     index = current.index(' ')
     for i in mapping2[index]:  # TODO make mapping dynamic
-        print("i in add_child for loop before swap")
-        print(i)
         s = swap(current, index, i)
         if s not in visited:
-            print("visited")
-            print(visited)
             queue.append(s)
-            print("Queue")
-            print(queue)
             visited.add(s)
-            print("s that was appended and added")
-            print(s)
-        else:
-            print("s was already visited")
 
 
 # conducts movement and returns updated state TODO verify if function can be reused in other algos
