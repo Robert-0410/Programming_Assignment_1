@@ -1,7 +1,58 @@
 # Models an n-by-n board with sliding tiles.
 
+
 # Class representing our state environment
 from Solver import is_solvable
+
+# Game board for size 2 x 2
+mapping2 = {
+    # 2 1
+    # 3
+    0: {2, 1},
+    1: {3, 0},
+    2: {3, 0},
+    3: {1, 2}
+}
+
+# Game board for size 3 x 3
+# TODO fix mapping
+mapping3 = {
+    # 0 1 2
+    # 3 4 5
+    # 6 7 8
+    0: {2, 1},
+    1: {3, 0},
+    2: {3, 0},
+    3: {1, 2},
+    4: {},
+    5: {},
+    6: {},
+    7: {},
+    8: {}
+}
+
+# Game board for size 4 x 4
+# TODO fix mappingi
+mapping4 = {
+    # 2 1
+    # 3
+    0: {2, 1},
+    1: {3, 0},
+    2: {3, 0},
+    3: {1, 2},
+    4: {},
+    5: {},
+    6: {},
+    7: {},
+    8: {},
+    9: {},
+    10: {},
+    11: {},
+    12: {},
+    13: {},
+    14: {},
+    15: {}
+}
 
 
 # TODO: might have to create my own state class or node
