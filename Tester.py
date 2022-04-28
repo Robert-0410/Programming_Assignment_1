@@ -14,16 +14,19 @@ def prep_input(ter_input):
 
 def main():
     if len(sys.argv) == 4:
+        # TODO adjust logic to run specified algorithm by command line arguments
         args = prep_input(sys.argv)
         bfs2 = Board(int(args[0]), args[1], args[2])
         flag = is_solvable(bfs2)
         print(flag)
         bfs_test = breath_first_search(bfs2)
         print(bfs_test)
+        # TODO have console display required output
+        # TODO must also output to a readme.txt file
 
     else:
         print("Did not receive command line arguments")
-        print("Running assignment requirements")
+        print("Running with assignment requirements")
         # TODO have console display required output
         # TODO must also output to a readme.txt file
         size2 = 2
