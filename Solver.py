@@ -97,9 +97,9 @@ def depth_first_search(board):
     return -1
 
 
-# TODO: implement: DFS, GBFS, A*
+# TODO: implement: GBFS, A*
 
-# adds child to tree search TODO: verify if this function can be reused
+# adds child to tree search
 def add_child(board, visited, current, fringe):
     index = current.state.index(' ')
     mapping = board.mapping
@@ -111,7 +111,7 @@ def add_child(board, visited, current, fringe):
             board.num_created += 1
 
 
-# conducts movement and returns updated state TODO verify if function can be reused in other algos
+# conducts movement and returns updated state
 def swap(current: str, index: int, i: int):
     s = list(current)
     s[index] = s[i]
