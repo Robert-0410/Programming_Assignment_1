@@ -1,6 +1,15 @@
 # Implements BFS, DFS, GBFS and A* to solve n-by-n sliding puzzle
 
 
+class Node:
+
+    # root node receives string 'root'
+    def __init__(self, parent, state):
+
+        self.parent = parent
+        self.state = state
+
+
 # Counts number of inversions in a given list representation of an n x n game state
 def inversion_count(the_list):
     output = 0
@@ -35,36 +44,37 @@ def is_solvable(board):
 # returns -1 if failed, returns 0 if successful
 def breath_first_search(board):
     # TODO store necessary state for solution: path
-    # TODO for finding the path try try paralleling the data structures but with nodes instead
-    queue = [board.list_as_str]
     visited = set()
     visited.add(board.list_as_str)
+    root = Node("root", board.list_as_str)
+    fringe = [root]
     depth = 0
-    while queue:
-        size = len(queue)
+    while fringe:
+        size = len(fringe)
         if size > board.max_fringe:
             board.max_fringe = size
         for i in range(size):
-            current = queue.pop(0)
+            current = fringe.pop(0)
             board.num_expanded += 1
-            if current == board.goal_state:
+            if current.state == board.goal_state:
                 # TODO once goal state is found we can back track to identify path
                 return 0
-            add_child(board, current, visited, queue)
+            add_child(board, visited, current, fringe)
+
         depth += 1
         board.depth = depth
     return -1
 
 
 # adds child to tree search TODO: verify if this function can be reused
-def add_child(board, current: str, visited, queue):
-    index = current.index(' ')
+def add_child(board, visited, current, fringe):
+    index = current.state.index(' ')
     mapping = board.mapping
     for i in mapping[index]:
-        s = swap(current, index, i)
+        s = swap(current.state, index, i)
         if s not in visited:
-            queue.append(s)
             visited.add(s)
+            fringe.append(Node(current, s))
             board.num_created += 1
 
 
