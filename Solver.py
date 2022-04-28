@@ -5,9 +5,17 @@ class Node:
 
     # root node receives string 'root'
     def __init__(self, parent, state):
-
         self.parent = parent
         self.state = state
+
+    # creates a list of states that represents the path found by the algorithm
+    def get_path(self):
+        current = self
+        output = [current.state]
+        while current.parent != 'root':
+            current = current.parent
+            output.insert(0, current.state)
+        return output
 
 
 # Counts number of inversions in a given list representation of an n x n game state
@@ -43,7 +51,6 @@ def is_solvable(board):
 # Performs BFS on sliding puzzle for solution
 # returns -1 if failed, returns 0 if successful
 def breath_first_search(board):
-    # TODO store necessary state for solution: path
     visited = set()
     visited.add(board.list_as_str)
     root = Node("root", board.list_as_str)
@@ -57,7 +64,7 @@ def breath_first_search(board):
             current = fringe.pop(0)
             board.num_expanded += 1
             if current.state == board.goal_state:
-                # TODO once goal state is found we can back track to identify path
+                board.path = current.get_path()
                 return 0
             add_child(board, visited, current, fringe)
 
@@ -65,6 +72,8 @@ def breath_first_search(board):
         board.depth = depth
     return -1
 
+
+# TODO: implement: DFS, GBFS, A*
 
 # adds child to tree search TODO: verify if this function can be reused
 def add_child(board, visited, current, fringe):
@@ -87,5 +96,3 @@ def swap(current: str, index: int, i: int):
     for i in s:
         output += i
     return output
-
-# TODO: implement: BFS, DFS, GBFS, A*

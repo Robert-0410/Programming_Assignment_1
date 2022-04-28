@@ -47,6 +47,8 @@ def main():
         print(bfs2.num_created)
         print("max fringe")
         print(bfs2.max_fringe)
+        print("Path is:")
+        print(bfs2.path)
 
         bfs3 = Board(size3, init_state3, bfs)
         breath_first_search(bfs3)
