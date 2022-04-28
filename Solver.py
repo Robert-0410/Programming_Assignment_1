@@ -48,7 +48,7 @@ def is_solvable(board):
     return output
 
 
-# Performs BFS on sliding puzzle for solution
+# Performs BFS on sliding puzzle for solution; fringe = queue
 # returns -1 if failed, returns 0 if successful
 def breath_first_search(board):
     visited = set()
@@ -62,6 +62,30 @@ def breath_first_search(board):
             board.max_fringe = size
         for i in range(size):
             current = fringe.pop(0)
+            board.num_expanded += 1
+            if current.state == board.goal_state:
+                board.path = current.get_path()
+                return 0
+            add_child(board, visited, current, fringe)
+
+        depth += 1
+        board.depth = depth
+    return -1
+
+
+# Performs the given search algorithm (dfs) to an n x n sliding puzzle; fringe = stack
+def depth_first_search(board):
+    visited = set()
+    visited.add(board.list_as_str)
+    root = Node("root", board.list_as_str)
+    fringe = [root]
+    depth = 0
+    while fringe:
+        size = len(fringe)
+        if size > board.max_fringe:
+            board.max_fringe = size
+        for i in range(size):
+            current = fringe.pop()
             board.num_expanded += 1
             if current.state == board.goal_state:
                 board.path = current.get_path()

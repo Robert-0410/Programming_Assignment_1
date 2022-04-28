@@ -2,7 +2,8 @@
 
 import sys
 from Board import Board
-from Solver import is_solvable, breath_first_search
+from Solver import is_solvable, breath_first_search, depth_first_search
+
 
 # TODO: function to print to file
 
@@ -16,10 +17,10 @@ def main():
     if len(sys.argv) == 4:
         # TODO adjust logic to run specified algorithm by command line arguments
         args = prep_input(sys.argv)
-        bfs2 = Board(int(args[0]), args[1], args[2])
-        flag = is_solvable(bfs2)
+        num_2 = Board(int(args[0]), args[1], args[2])
+        flag = is_solvable(num_2)
         print(flag)
-        bfs_test = breath_first_search(bfs2)
+        bfs_test = breath_first_search(num_2)
         print(bfs_test)
         # TODO have console display required output
         # TODO must also output to a readme.txt file
@@ -40,40 +41,49 @@ def main():
         bfs = "BFS"
 
         # running three sizes with bfs
-        bfs2 = Board(size2, init_state2, bfs)
-        breath_first_search(bfs2)
+        num_2 = Board(size2, init_state2, bfs)
+        #  breath_first_search(num_2)
+        depth_first_search(num_2)
         print("depth bfs n = 2")
-        print(bfs2.depth)
+        print(num_2.depth)
         print("expanded")
-        print(bfs2.num_expanded)
+        print(num_2.num_expanded)
         print("num created")
-        print(bfs2.num_created)
+        print(num_2.num_created)
         print("max fringe")
-        print(bfs2.max_fringe)
+        print(num_2.max_fringe)
         print("Path is:")
-        print(bfs2.path)
+        print(num_2.path)
+        print("---------------------------------------------------------------num_2 done")
 
-        bfs3 = Board(size3, init_state3, bfs)
-        breath_first_search(bfs3)
+        num_3 = Board(size3, init_state3, bfs)
+        #  breath_first_search(num_3)
+        depth_first_search(num_3)
         print("depth bfs n = 3")
-        print(bfs3.depth)
+        print(num_3.depth)
         print("expanded")
-        print(bfs3.num_expanded)
+        print(num_3.num_expanded)
         print("num created")
-        print(bfs3.num_created)
+        print(num_3.num_created)
         print("max fringe")
-        print(bfs3.max_fringe)
+        print(num_3.max_fringe)
+        print("Path is:")
+        print(num_3.path)
+        print("-----------------------------------------------------------------num_3 done")
 
-        bfs4 = Board(size4, init_state4, bfs)
-        breath_first_search(bfs4)
+        num_4 = Board(size4, init_state4, bfs)
+        #  breath_first_search(num_4)
+        depth_first_search(num_4)
         print("depth bfs n = 4")
-        print(bfs4.depth)
+        print(num_4.depth)
         print("expanded")
-        print(bfs4.num_expanded)
+        print(num_4.num_expanded)
         print("num created")
-        print(bfs4.num_created)
+        print(num_4.num_created)
         print("max fringe")
-        print(bfs4.max_fringe)
+        print(num_4.max_fringe)
+        print("Path is:")
+        print(num_4.path)
 
 
 main()
