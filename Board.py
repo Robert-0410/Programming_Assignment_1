@@ -2,7 +2,6 @@
 
 
 # Class representing our state environment
-from Solver import is_solvable
 
 # Game board for size 2 x 2
 mapping2 = {
@@ -84,7 +83,6 @@ def set_goal_state(size: int):
         print("Error: goal state was never assigned in set_goal_state()")
 
 
-# TODO: might have to create my own state class or node
 class Board:
 
     def __init__(self, size, the_list, algorithm):
@@ -97,12 +95,12 @@ class Board:
         self.goal_state = set_goal_state(size)
         self.mapping = set_mapping(size)
 
-        # state for assignment requirements TODO verify outputs
-        self.path = [""]  # TODO: will contain solution path once implemented
+        # state for assignment requirements
+        self.path = [""]
         self.depth = 0
         self.num_created = 0
         self.num_expanded = 0
-        self.max_fringe = 0  # TODO: max size of fringe at any point during the search
+        self.max_fringe = 0
 
     def make_board(self, the_list):
         end = self.size
@@ -134,16 +132,3 @@ def find_blank_spot(size, the_list):
             helper = helper + size
 
     return row
-
-
-# TODO remove below code once sure it will not be needed
-# Test function for testing code in this file
-def test():
-    t = Board(4, "123456789AB DEFC", "GBFS")
-    print(t.state)
-    print(t.the_list)
-    flag = is_solvable(t)
-    print(t.row_of_blank)
-    print(flag)
-
-# test()
