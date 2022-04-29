@@ -144,7 +144,6 @@ def swap(current: str, index: int, i: int):
 
 initial_state = '32 1'
 initial_state3 = '15342678 '
-goal_state = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 size_test = 2
 
 locations2 = {
