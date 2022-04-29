@@ -7,6 +7,7 @@ class Node:
     def __init__(self, parent, state):
         self.parent = parent
         self.state = state
+        # TODO assign each node a heuristic
 
     # creates a list of states that represents the path found by the algorithm
     def get_path(self):
@@ -16,6 +17,10 @@ class Node:
             current = current.parent
             output.insert(0, current.state)
         return output
+
+    # returns heuristics value associated to the node based on Manhattan Distance
+    def get_heuristics(self):
+        return self
 
 
 # Counts number of inversions in a given list representation of an n x n game state
@@ -73,6 +78,7 @@ def breath_first_search(board):
     return -1
 
 
+# TODO: gets stuck after getting a solution found, will only get solution again if I change the mapping index 15
 # Performs the given search algorithm (dfs) to an n x n sliding puzzle; fringe = stack
 def depth_first_search(board):
     visited = set()
@@ -95,6 +101,18 @@ def depth_first_search(board):
         depth += 1
         board.depth = depth
     return -1
+
+
+# Performs gbfs to an n x n sliding puzzle: fringe priority queue, f(x) = h(x)
+# TODO implement
+def greedy_best_first_search(board):
+    return board  # temp
+
+
+# Performs A* search to an n x n sliding puzzle; fringe priority queue, f(x) = g(x) + h(x)
+# TODO implement
+def a_star_search(board):
+    return board  # temp
 
 
 # TODO: implement: GBFS, A*
@@ -120,3 +138,58 @@ def swap(current: str, index: int, i: int):
     for i in s:
         output += i
     return output
+
+
+# ----------------test code--------------------------
+
+initial_state = '32 1'
+initial_state3 = '15342678 '
+goal_state = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+size_test = 2
+
+locations2 = {
+    # Goal state
+    # 2 1
+    # 3 0
+    0: [1, 1],
+    1: [0, 1],
+    2: [0, 0],
+    3: [1, 0]
+}
+
+locations3 = {
+    0: [0, 0],
+    1: [0, 1],
+    2: [0, 2],
+    3: [1, 0],
+    4: [1, 1],
+    5: [1, 2],
+    6: [2, 0],
+    7: [2, 1],
+    8: [2, 2]
+}
+
+
+def calculateManhattan(initial_state):
+    # TODO argument must be a Node , and board.goal_state
+    input_str = initial_state  # TODO change to node state
+    zero_index = input_str.index(' ')
+    mod_state = input_str[:zero_index] + '0' + input_str[zero_index + 1:]
+
+    output = 0
+    for i in range(len(mod_state)):
+        goal_row = locations2[i].pop(0)
+        goal_col = locations2[i].pop(0)  # TODO make locations dynamic
+
+        piece = str(i)
+        index = mod_state.index(piece)
+        curr_row = int(index / size_test)
+        curr_col = index % size_test
+        output += abs(goal_row - curr_row) + abs(goal_col - curr_col)
+    return output
+
+# print(calculateManhattan(initial_state))
+# print(locations2[1].pop(0))
+# print(locations2)
+# print(locations2[1].pop(0))
+# print(locations2)
