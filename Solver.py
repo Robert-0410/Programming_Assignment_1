@@ -7,7 +7,9 @@ class Node:
     def __init__(self, parent, state):
         self.parent = parent
         self.state = state
-        # TODO assign each node a heuristic
+        if 1 == 1:  # TODO only if the algorithm is greedy or A*
+            self.locations = self.get_goal_locations()
+            self.heuristic = self.get_heuristics()
 
     # creates a list of states that represents the path found by the algorithm
     def get_path(self):
@@ -20,7 +22,89 @@ class Node:
 
     # returns heuristics value associated to the node based on Manhattan Distance
     def get_heuristics(self):
-        return self
+        curr_state = self.state
+        zero_index = curr_state.index(' ')
+        mod_state = curr_state[:zero_index] + '0' + curr_state[zero_index + 1:]
+        output = 0
+        for i in range(len(mod_state)):
+            goal_row = self.locations[i].pop(0)
+            goal_col = self.locations[i].pop(0)
+
+            if i < 10:
+                piece = str(i)
+            else:
+                piece = convert_digit_to_char(i)
+            index = mod_state.index(piece)
+            curr_row = int(index / 2)  # TODO needs to be dynamic
+            curr_col = index % 2  # TODO the 2 needs to be size ie 2,3,4
+            output += abs(goal_row - curr_row) + abs(goal_col - curr_col)
+        return output
+
+    def get_goal_locations(self):
+        size = len(self.state)
+        if size == 4:
+            return {
+                # Goal state
+                # 2 1
+                # 3 0
+                0: [1, 1],
+                1: [0, 1],
+                2: [0, 0],
+                3: [1, 0]
+            }
+        elif size == 9:
+            return {
+                0: [0, 0],
+                1: [0, 1],
+                2: [0, 2],
+                3: [1, 0],
+                4: [1, 1],
+                5: [1, 2],
+                6: [2, 0],
+                7: [2, 1],
+                8: [2, 2]
+            }
+        elif size == 16:
+            return {
+                0: [3, 3],
+                1: [0, 0],
+                2: [0, 1],
+                3: [0, 2],
+                4: [0, 3],
+                5: [1, 0],
+                6: [1, 1],
+                7: [1, 2],
+                8: [1, 3],
+                9: [2, 0],
+                10: [2, 1],
+                11: [2, 2],
+                12: [2, 3],
+                13: [3, 0],
+                14: [3, 1],
+                15: [3, 2]
+            }
+        else:
+            print("Locations never got assigned in get_goal_locations()")
+
+
+# Converts number to the corresponding character
+def convert_digit_to_char(digit: int):
+    output = ''
+    if digit == 10:
+        output = 'A'
+    elif digit == 11:
+        output = 'B'
+    elif digit == 12:
+        output = 'C'
+    elif digit == 13:
+        output = 'D'
+    elif digit == 14:
+        output = 'E'
+    elif digit == 15:
+        output = 'F'
+    else:
+        print("Digit did not get converted to char in convert_digit_to_char()")
+    return output
 
 
 # Counts number of inversions in a given list representation of an n x n game state
@@ -141,54 +225,9 @@ def swap(current: str, index: int, i: int):
 
 
 # ----------------test code--------------------------
+test2 = Node("root", "32 1")
 
-initial_state = '32 1'
-initial_state3 = '15342678 '
-size_test = 2
-
-locations2 = {
-    # Goal state
-    # 2 1
-    # 3 0
-    0: [1, 1],
-    1: [0, 1],
-    2: [0, 0],
-    3: [1, 0]
-}
-
-locations3 = {
-    0: [0, 0],
-    1: [0, 1],
-    2: [0, 2],
-    3: [1, 0],
-    4: [1, 1],
-    5: [1, 2],
-    6: [2, 0],
-    7: [2, 1],
-    8: [2, 2]
-}
+print(test2.heuristic)
 
 
-def calculateManhattan(initial_state):
-    # TODO argument must be a Node , and board.goal_state
-    input_str = initial_state  # TODO change to node state
-    zero_index = input_str.index(' ')
-    mod_state = input_str[:zero_index] + '0' + input_str[zero_index + 1:]
 
-    output = 0
-    for i in range(len(mod_state)):
-        goal_row = locations2[i].pop(0)
-        goal_col = locations2[i].pop(0)  # TODO make locations dynamic
-
-        piece = str(i)
-        index = mod_state.index(piece)
-        curr_row = int(index / size_test)
-        curr_col = index % size_test
-        output += abs(goal_row - curr_row) + abs(goal_col - curr_col)
-    return output
-
-# print(calculateManhattan(initial_state))
-# print(locations2[1].pop(0))
-# print(locations2)
-# print(locations2[1].pop(0))
-# print(locations2)
