@@ -1,13 +1,18 @@
 # Implements BFS, DFS, GBFS and A* to solve n-by-n sliding puzzle
+from Board import Board
 
 
 class Node:
 
     # root node receives string 'root'
-    def __init__(self, parent, state):
+    def __init__(self, parent, state, board):
         self.parent = parent
         self.state = state
-        # TODO assign each node a heuristic
+        self.algorithm = board.algorithm
+        if self.algorithm == 'GBFS' or self.algorithm == 'A*':  # TODO only if the algorithm is greedy or A*
+            self.size = board.size
+            self.locations = self.get_goal_locations()
+            self.heuristic = self.get_heuristics()
 
     # creates a list of states that represents the path found by the algorithm
     def get_path(self):
@@ -20,7 +25,89 @@ class Node:
 
     # returns heuristics value associated to the node based on Manhattan Distance
     def get_heuristics(self):
-        return self
+        curr_state = self.state
+        zero_index = curr_state.index(' ')
+        mod_state = curr_state[:zero_index] + '0' + curr_state[zero_index + 1:]
+        output = 0
+        for i in range(len(mod_state)):
+            goal_row = self.locations[i].pop(0)
+            goal_col = self.locations[i].pop(0)
+
+            if i < 10:
+                piece = str(i)
+            else:
+                piece = convert_digit_to_char(i)
+            index = mod_state.index(piece)
+            curr_row = int(index / self.size)
+            curr_col = index % self.size
+            output += abs(goal_row - curr_row) + abs(goal_col - curr_col)
+        return output
+
+    def get_goal_locations(self):
+        size = len(self.state)
+        if size == 4:
+            return {
+                # Goal state
+                # 2 1
+                # 3 0
+                0: [1, 1],
+                1: [0, 1],
+                2: [0, 0],
+                3: [1, 0]
+            }
+        elif size == 9:
+            return {
+                0: [0, 0],
+                1: [0, 1],
+                2: [0, 2],
+                3: [1, 0],
+                4: [1, 1],
+                5: [1, 2],
+                6: [2, 0],
+                7: [2, 1],
+                8: [2, 2]
+            }
+        elif size == 16:
+            return {
+                0: [3, 3],
+                1: [0, 0],
+                2: [0, 1],
+                3: [0, 2],
+                4: [0, 3],
+                5: [1, 0],
+                6: [1, 1],
+                7: [1, 2],
+                8: [1, 3],
+                9: [2, 0],
+                10: [2, 1],
+                11: [2, 2],
+                12: [2, 3],
+                13: [3, 0],
+                14: [3, 1],
+                15: [3, 2]
+            }
+        else:
+            print("Locations never got assigned in get_goal_locations()")
+
+
+# Converts number to the corresponding character
+def convert_digit_to_char(digit: int):
+    output = ''
+    if digit == 10:
+        output = 'A'
+    elif digit == 11:
+        output = 'B'
+    elif digit == 12:
+        output = 'C'
+    elif digit == 13:
+        output = 'D'
+    elif digit == 14:
+        output = 'E'
+    elif digit == 15:
+        output = 'F'
+    else:
+        print("Digit did not get converted to char in convert_digit_to_char()")
+    return output
 
 
 # Counts number of inversions in a given list representation of an n x n game state
@@ -58,7 +145,7 @@ def is_solvable(board):
 def breath_first_search(board):
     visited = set()
     visited.add(board.list_as_str)
-    root = Node("root", board.list_as_str)
+    root = Node("root", board.list_as_str, board)
     fringe = [root]
     depth = 0
     while fringe:
@@ -83,7 +170,7 @@ def breath_first_search(board):
 def depth_first_search(board):
     visited = set()
     visited.add(board.list_as_str)
-    root = Node("root", board.list_as_str)
+    root = Node("root", board.list_as_str, board)
     fringe = [root]
     depth = 0
     while fringe:
@@ -125,7 +212,7 @@ def add_child(board, visited, current, fringe):
         s = swap(current.state, index, i)
         if s not in visited:
             visited.add(s)
-            fringe.append(Node(current, s))
+            fringe.append(Node(current, s, board))
             board.num_created += 1
 
 
@@ -141,55 +228,15 @@ def swap(current: str, index: int, i: int):
 
 
 # ----------------test code--------------------------
+board2 = Board(2, "32 1", "A*")
+test2 = Node("root", "32 1", board2)
 
-initial_state = '32 1'
-initial_state3 = '15342678 '
-goal_state = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-size_test = 2
+board3 = Board(3, "15342678 ", "GBFS")
+test3 = Node("root", board3.list_as_str, board3)
 
-locations2 = {
-    # Goal state
-    # 2 1
-    # 3 0
-    0: [1, 1],
-    1: [0, 1],
-    2: [0, 0],
-    3: [1, 0]
-}
+board4 = Board(4, "123456789AB DEFC", "A*")
+test4 = Node("root", board4.list_as_str, board4)
 
-locations3 = {
-    0: [0, 0],
-    1: [0, 1],
-    2: [0, 2],
-    3: [1, 0],
-    4: [1, 1],
-    5: [1, 2],
-    6: [2, 0],
-    7: [2, 1],
-    8: [2, 2]
-}
-
-
-def calculateManhattan(initial_state):
-    # TODO argument must be a Node , and board.goal_state
-    input_str = initial_state  # TODO change to node state
-    zero_index = input_str.index(' ')
-    mod_state = input_str[:zero_index] + '0' + input_str[zero_index + 1:]
-
-    output = 0
-    for i in range(len(mod_state)):
-        goal_row = locations2[i].pop(0)
-        goal_col = locations2[i].pop(0)  # TODO make locations dynamic
-
-        piece = str(i)
-        index = mod_state.index(piece)
-        curr_row = int(index / size_test)
-        curr_col = index % size_test
-        output += abs(goal_row - curr_row) + abs(goal_col - curr_col)
-    return output
-
-# print(calculateManhattan(initial_state))
-# print(locations2[1].pop(0))
-# print(locations2)
-# print(locations2[1].pop(0))
-# print(locations2)
+print(test2.heuristic)
+print(test3.heuristic)
+print(test4.heuristic)
