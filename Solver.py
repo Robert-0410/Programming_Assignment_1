@@ -1,13 +1,16 @@
 # Implements BFS, DFS, GBFS and A* to solve n-by-n sliding puzzle
+from Board import Board
 
 
 class Node:
 
     # root node receives string 'root'
-    def __init__(self, parent, state):
+    def __init__(self, parent, state, board):
         self.parent = parent
         self.state = state
-        if 1 == 1:  # TODO only if the algorithm is greedy or A*
+        self.algorithm = board.algorithm
+        if self.algorithm == 'GBFS' or self.algorithm == 'A*':  # TODO only if the algorithm is greedy or A*
+            self.size = board.size
             self.locations = self.get_goal_locations()
             self.heuristic = self.get_heuristics()
 
@@ -35,8 +38,8 @@ class Node:
             else:
                 piece = convert_digit_to_char(i)
             index = mod_state.index(piece)
-            curr_row = int(index / 2)  # TODO needs to be dynamic
-            curr_col = index % 2  # TODO the 2 needs to be size ie 2,3,4
+            curr_row = int(index / self.size)
+            curr_col = index % self.size
             output += abs(goal_row - curr_row) + abs(goal_col - curr_col)
         return output
 
@@ -142,7 +145,7 @@ def is_solvable(board):
 def breath_first_search(board):
     visited = set()
     visited.add(board.list_as_str)
-    root = Node("root", board.list_as_str)
+    root = Node("root", board.list_as_str, board)
     fringe = [root]
     depth = 0
     while fringe:
@@ -167,7 +170,7 @@ def breath_first_search(board):
 def depth_first_search(board):
     visited = set()
     visited.add(board.list_as_str)
-    root = Node("root", board.list_as_str)
+    root = Node("root", board.list_as_str, board)
     fringe = [root]
     depth = 0
     while fringe:
@@ -209,7 +212,7 @@ def add_child(board, visited, current, fringe):
         s = swap(current.state, index, i)
         if s not in visited:
             visited.add(s)
-            fringe.append(Node(current, s))
+            fringe.append(Node(current, s, board))
             board.num_created += 1
 
 
@@ -225,9 +228,15 @@ def swap(current: str, index: int, i: int):
 
 
 # ----------------test code--------------------------
-test2 = Node("root", "32 1")
+board2 = Board(2, "32 1", "A*")
+test2 = Node("root", "32 1", board2)
+
+board3 = Board(3, "15342678 ", "GBFS")
+test3 = Node("root", board3.list_as_str, board3)
+
+board4 = Board(4, "123456789AB DEFC", "A*")
+test4 = Node("root", board4.list_as_str, board4)
 
 print(test2.heuristic)
-
-
-
+print(test3.heuristic)
+print(test4.heuristic)
