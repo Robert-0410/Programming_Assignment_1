@@ -1,5 +1,4 @@
 # Implements BFS, DFS, GBFS and A* to solve n-by-n sliding puzzle
-from Board import Board
 
 
 class Node:
@@ -8,11 +7,17 @@ class Node:
     def __init__(self, parent, state, board):
         self.parent = parent
         self.state = state
+        self.num = board.num_created
         self.algorithm = board.algorithm
-        if self.algorithm == 'GBFS' or self.algorithm == 'A*':  # TODO only if the algorithm is greedy or A*
+        self.node_depth = board.depth
+        if self.algorithm == 'GBFS' or self.algorithm == 'A*':
             self.size = board.size
             self.locations = self.get_goal_locations()
             self.heuristic = self.get_heuristics()
+
+    # Less than operator for sort() or other sorting algorithms
+    def __lt__(self, other):
+        return self.num < other.num
 
     # creates a list of states that represents the path found by the algorithm
     def get_path(self):
@@ -191,18 +196,54 @@ def depth_first_search(board):
 
 
 # Performs gbfs to an n x n sliding puzzle: fringe priority queue, f(x) = h(x)
-# TODO implement
 def greedy_best_first_search(board):
-    return board  # temp
+    visited = set()
+    visited.add(board.list_as_str)
+    root = Node("root", board.list_as_str, board)
+    fringe = [(root.heuristic, root)]
+    depth = 0
+    while fringe:
+        size = len(fringe)
+        if size > board.max_fringe:
+            board.max_fringe = size
+        for i in range(size):
+            curr_tuple = fringe.pop(0)
+            current = curr_tuple[1]
+            board.num_expanded += 1
+            if current.state == board.goal_state:
+                board.path = current.get_path()
+                return 0
+            add_child_heuristics(board, visited, current, fringe)
+
+        depth += 1
+        board.depth = depth
+    return -1
 
 
 # Performs A* search to an n x n sliding puzzle; fringe priority queue, f(x) = g(x) + h(x)
-# TODO implement
 def a_star_search(board):
-    return board  # temp
+    visited = set()
+    visited.add(board.list_as_str)
+    root = Node("root", board.list_as_str, board)
+    fringe = [(root.heuristic, root)]
+    depth = 0
+    while fringe:
+        size = len(fringe)
+        if size > board.max_fringe:
+            board.max_fringe = size
+        for i in range(size):
+            curr_tuple = fringe.pop(0)
+            current = curr_tuple[1]
+            board.num_expanded += 1
+            if current.state == board.goal_state:
+                board.path = current.get_path()
+                return 0
+            add_child_heuristics(board, visited, current, fringe)
 
+        depth += 1
+        board.depth = depth
+    return -1
 
-# TODO: implement: GBFS, A*
 
 # adds child to tree search
 def add_child(board, visited, current, fringe):
@@ -216,6 +257,22 @@ def add_child(board, visited, current, fringe):
             board.num_created += 1
 
 
+# adds child to tree search with heuristics
+def add_child_heuristics(board, visited, current, fringe):
+    index = current.state.index(' ')
+    mapping = board.mapping
+    for i in mapping[index]:
+        s = swap(current.state, index, i)
+        if s not in visited:
+            visited.add(s)
+            child = Node(current, s, board)
+            if board.algorithm == "GBFS":
+                fringe.append((child.heuristic, child))
+            else:
+                fringe.append((child.heuristic + child.node_depth, child))
+            fringe.sort(reverse=False)
+
+
 # conducts movement and returns updated state
 def swap(current: str, index: int, i: int):
     s = list(current)
@@ -225,18 +282,3 @@ def swap(current: str, index: int, i: int):
     for i in s:
         output += i
     return output
-
-
-# ----------------test code--------------------------
-board2 = Board(2, "32 1", "A*")
-test2 = Node("root", "32 1", board2)
-
-board3 = Board(3, "15342678 ", "GBFS")
-test3 = Node("root", board3.list_as_str, board3)
-
-board4 = Board(4, "123456789AB DEFC", "A*")
-test4 = Node("root", board4.list_as_str, board4)
-
-print(test2.heuristic)
-print(test3.heuristic)
-print(test4.heuristic)
