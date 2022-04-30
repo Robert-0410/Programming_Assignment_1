@@ -2,7 +2,7 @@
 
 import sys
 from Board import Board
-from Solver import is_solvable, breath_first_search, depth_first_search
+from Solver import is_solvable, breath_first_search, depth_first_search, greedy_best_first_search, a_star_search
 
 
 # TODO: function to print to file
@@ -39,11 +39,14 @@ def main():
         init_state4 = "123456789AB DEFC"
 
         bfs = "BFS"
+        dfs = "DFS"
+        gbfs = "GBFS"
+        a_star = "A*"
 
         # running three sizes with bfs
-        num_2 = Board(size2, init_state2, bfs)
+        num_2 = Board(size2, init_state2, a_star)
         #  breath_first_search(num_2)
-        depth_first_search(num_2)
+        a_star_search(num_2)
         print("depth bfs n = 2")
         print(num_2.depth)
         print("expanded")
@@ -56,9 +59,9 @@ def main():
         print(num_2.path)
         print("---------------------------------------------------------------num_2 done")
 
-        num_3 = Board(size3, init_state3, bfs)
+        num_3 = Board(size3, init_state3, a_star)
         #  breath_first_search(num_3)
-        depth_first_search(num_3)
+        a_star_search(num_3)
         print("depth bfs n = 3")
         print(num_3.depth)
         print("expanded")
@@ -71,9 +74,9 @@ def main():
         print(num_3.path)
         print("-----------------------------------------------------------------num_3 done")
 
-        num_4 = Board(size4, init_state4, bfs)
+        num_4 = Board(size4, init_state4, a_star)
         #  breath_first_search(num_4)
-        depth_first_search(num_4)
+        a_star_search(num_4)
         print("depth bfs n = 4")
         print(num_4.depth)
         print("expanded")

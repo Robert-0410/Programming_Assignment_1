@@ -46,11 +46,11 @@ mapping4 = {
     8: {4, 9, 12},
     9: {5, 8, 10, 13},
     10: {6, 9, 11, 14},
-    11: {7, 10, 15},
+    11: {7, 10, 15},  # messing with index = 11, since it is the first blank spot
     12: {8, 13},
     13: {9, 12, 14},
     14: {10, 13, 15},
-    15: {14, 11}
+    15: {11, 14}
 }
 
 # goal states for size 2, 3, and 4
