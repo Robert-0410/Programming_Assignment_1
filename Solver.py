@@ -1,6 +1,7 @@
 # Implements BFS, DFS, GBFS and A* to solve n-by-n sliding puzzle
 
 
+# Used for the graph searches of bfs, dfs, gbfs, and A*
 class Node:
 
     # root node receives string 'root'
@@ -48,6 +49,7 @@ class Node:
             output += abs(goal_row - curr_row) + abs(goal_col - curr_col)
         return output
 
+    # sets the locations needed to calculate heuristics
     def get_goal_locations(self):
         size = len(self.state)
         if size == 4:
@@ -170,7 +172,6 @@ def breath_first_search(board):
     return -1
 
 
-# TODO: gets stuck after getting a solution found, will only get solution again if I change the mapping index 15
 # Performs the given search algorithm (dfs) to an n x n sliding puzzle; fringe = stack
 def depth_first_search(board):
     visited = set()
