@@ -88,5 +88,10 @@ def main():
         print("Path is:")
         print(num_4.path)
 
+        test = Board(size4, init_state4, dfs)
+        depth_first_search(test)
+        print("Path for test")
+        print(test.path)
+
 
 main()

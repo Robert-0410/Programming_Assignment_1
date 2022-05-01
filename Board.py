@@ -1,8 +1,6 @@
 # Models an n-by-n board with sliding tiles.
 
 
-# Class representing our state environment
-
 # Game board for size 2 x 2
 mapping2 = {
     # 2 1
@@ -46,7 +44,7 @@ mapping4 = {
     8: {4, 9, 12},
     9: {5, 8, 10, 13},
     10: {6, 9, 11, 14},
-    11: {7, 10, 15},  # messing with index = 11, since it is the first blank spot
+    11: {15, 7, 10},  # messing with index = 11, since it is the first blank spot
     12: {8, 13},
     13: {9, 12, 14},
     14: {10, 13, 15},
@@ -83,8 +81,10 @@ def set_goal_state(size: int):
         print("Error: goal state was never assigned in set_goal_state()")
 
 
+# Class representing our state environment
 class Board:
 
+    # constructor
     def __init__(self, size, the_list, algorithm):
         self.the_list = [char for char in the_list]
         self.list_as_str = the_list
@@ -102,6 +102,7 @@ class Board:
         self.num_expanded = 0
         self.max_fringe = 0
 
+    # makes the state into a 2D list
     def make_board(self, the_list):
         end = self.size
         current = 0
@@ -119,6 +120,7 @@ class Board:
         return output
 
 
+# identifies the location of the blank location
 def find_blank_spot(size, the_list):
     index = the_list.find(' ')
     helper = size
